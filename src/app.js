@@ -38,22 +38,17 @@ app.post('/api/posts', (req, res, next) => {
 });
 
 app.get('/api/posts', (req, res, next) => {
-    const posts = [
-        {
-            id: 'sdfghseh98',
-            title: 'First server post',
-            content: 'This is the first post from the server'
-        },
-        {
-            id: 'ngfhtuy38d',
-            title: 'Second server post',
-            content: 'This is the first post from the server!'
-        }
-    ];
-    res.status(200).json({
-        message: 'Posts fetched successfully',
-        posts: posts
+    Post.find().then(documents => {
+        res.status(200).json({
+            message: 'Posts fetched successfully',
+            posts: documents
+        });
     });
 });
+
+app.delete('/api/posts/:id', (req, res, next) => {
+    console.log(req.params.id);
+    res.status(200).json({message: 'Post deleted'});
+})
 
 module.exports = app;
