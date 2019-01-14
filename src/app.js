@@ -30,11 +30,13 @@ app.post('/api/posts', (req, res, next) => {
         title: req.body.title,
         content: req.body.content
     });
-    post.save();
-    console.log(post);
-    res.status(201).json({
-        message: 'Post added correctly'
+    post.save().then(response => {
+        res.status(201).json({
+            message: 'Post added correctly',
+            postId: response._id
+        });
     });
+    
 });
 
 app.get('/api/posts', (req, res, next) => {
@@ -47,8 +49,9 @@ app.get('/api/posts', (req, res, next) => {
 });
 
 app.delete('/api/posts/:id', (req, res, next) => {
-    console.log(req.params.id);
-    res.status(200).json({message: 'Post deleted'});
+    Post.deleteOne({_id: req.params.id}).then(result => {
+        res.status(200).json({message: 'Post deleted'});
+    });
 })
 
 module.exports = app;
